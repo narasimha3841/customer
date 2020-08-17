@@ -13,6 +13,7 @@ Run application
 3. and execute below command 
  java -jar customer-service.jar
  
+The application will start running at <http://localhost:7070>.
 
 Test APIs using Swagger or Postman
 -----------------------------------
@@ -154,6 +155,7 @@ Response body
 ### Request
 Method: PUT
 URL: http://localhost:7070/cusomters/{customerId}/address
+
 Example:  http://localhost:7070/cusomters/2/address
 
 Body: 
@@ -185,6 +187,7 @@ Body:
 ### Request
 Method: GET
 URL: http://localhost:7070/cusomters/search/{searchKeyword}
+
 Example:  http://localhost:7070/cusomters/search/Edwin
 
 Response:

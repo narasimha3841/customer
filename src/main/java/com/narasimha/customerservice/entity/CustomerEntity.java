@@ -36,9 +36,10 @@ public class CustomerEntity extends BaseEntity{
 	
 	@Column(name = "AGE")
 	private Integer age;
+
 	
-	@OneToOne(targetEntity= AddressEntity.class,cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JoinColumn(name="CUSTOMER_ID", referencedColumnName="CUSTOMER_ID")
+    @JoinColumn(name = "ADDRESS_ID")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private AddressEntity address;
 
 	public CustomerEntity() {

@@ -39,7 +39,7 @@ public class AddressEntity extends BaseEntity {
     @Column(name = "COUNTRY")
 	private String country;
     
-
+    
 	public AddressEntity() {
 		
 	}
