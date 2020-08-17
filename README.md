@@ -25,7 +25,9 @@ Swagger URL: http://localhost:7070/swagger-ui.html
 Method: POST
 URL: http://localhost:7070/cusomters
 
-Body: 
+Body:
+ 
+```
 {
  
 
@@ -39,9 +41,11 @@ Body:
     "province": "zuid holland",
     "street": "van rynostraat"
   }
+```
 
 
 ### Response
+```
 {
   "timestamp": "2020-08-16T19:52:29.584+0000",
   "statusCode": 200,
@@ -62,6 +66,7 @@ Body:
     }
   }
 }
+```
 
 ## Retrive Customers By ID <br/>
 
@@ -71,6 +76,7 @@ URL: http://localhost:7070/cusomters/1
 
 
 ### Response
+```
 {
   "timestamp": "2020-08-16T19:56:20.439+0000",
   "statusCode": 200,
@@ -91,6 +97,7 @@ URL: http://localhost:7070/cusomters/1
     }
   }
 }
+```
 
 ## Retrive ALL Customers <br/>
 
@@ -102,7 +109,8 @@ URL: http://localhost:7070/cusomters
 ### Response
 	
 Response body
-Download
+
+```
 {
   "timestamp": "2020-08-16T19:58:26.169+0000",
   "statusCode": 200,
@@ -139,7 +147,7 @@ Download
     }
   ]
 }
-
+```
 
 ## Update Customer Address <br/>
 
@@ -150,6 +158,7 @@ Example:  http://localhost:7070/cusomters/2/address
 
 Body: 
 
+```
 {
   "city": "Riswijk",
   "country": "Netherlands",
@@ -169,6 +178,7 @@ Body:
     "message": "Address has been updated successfully"
   }
 }
+```
 
 ## Search Customer By First Name or Last Name <br/>
 
@@ -178,6 +188,8 @@ URL: http://localhost:7070/cusomters/search/{searchKeyword}
 Example:  http://localhost:7070/cusomters/search/Edwin
 
 Response:
+
+```
 {
   "timestamp": "2020-08-16T20:04:33.160+0000",
   "statusCode": 200,
@@ -200,6 +212,7 @@ Response:
     }
   ]
 }
+```
 
 
 ## H2 Database console url 
