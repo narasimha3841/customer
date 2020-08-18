@@ -12,6 +12,7 @@ compile
 Run application
 ---------------
 3. and execute below command 
+ 
  java -jar customer-service.jar
  
 The application will start running at <http://localhost:7070>.
