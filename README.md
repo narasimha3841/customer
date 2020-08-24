@@ -3,6 +3,7 @@ Below are the steps to compile and run the application:
 compile
 --------
 1. Go to project directory and run below command : 
+	
 	mvn clean install
 
 2. Run project:
@@ -11,6 +12,7 @@ compile
 Run application
 ---------------
 3. and execute below command 
+ 
  java -jar customer-service.jar
  
 The application will start running at <http://localhost:7070>.
@@ -34,7 +36,7 @@ Body:
 
   "firstName": "Edwin",
   "lastName": "Krupier",
-  "age": 39,
+  "age": 23,
   "address": {
     "city": "Den haag",
     "country": "Netherlands",
@@ -55,11 +57,11 @@ Body:
   "payload": {
     "customerId": 1,
     "firstName": "Edwin",
-    "lastName": "Krupier",
+    "lastName": "Kuiper",
     "age": 23,
     "address": {
       "addressId": 1,
-      "street": "van rynostraat",
+      "street": "van ruysbroekstraat",
       "postalcode": "2531TJ",
       "city": "Den haag",
       "province": "zuid holland",
@@ -86,11 +88,11 @@ URL: http://localhost:7070/cusomters/1
   "payload": {
     "customerId": 1,
     "firstName": "Edwin",
-    "lastName": "Krupier",
+    "lastName": "Kuiper",
     "age": 23,
     "address": {
       "addressId": 1,
-      "street": "van rynostraat",
+      "street": "van ruysbroekstraat",
       "postalcode": "2531TJ",
       "city": "Den haag",
       "province": "zuid holland",
@@ -121,7 +123,7 @@ Response body
     {
       "customerId": 1,
       "firstName": "Edwin",
-      "lastName": "Krupier",
+      "lastName": "Kuiper",
       "age": 23,
       "address": {
         "addressId": 1,
@@ -139,7 +141,7 @@ Response body
       "age": 23,
       "address": {
         "addressId": 2,
-        "street": "van rynostraat",
+        "street": "van ruysbroekstraat",
         "postalcode": "2831TJ",
         "city": "Den haag",
         "province": "zuid holland",
@@ -166,7 +168,7 @@ Body:
   "country": "Netherlands",
   "postalcode": "2841",
   "province": "south holland",
-  "street": "van raynstraat"
+  "street": "van ruysbroekstraat"
 }
 
 
@@ -202,11 +204,11 @@ Response:
     {
       "customerId": 1,
       "firstName": "Edwin",
-      "lastName": "Krupier",
+      "lastName": "Kuiper",
       "age": 23,
       "address": {
         "addressId": 1,
-        "street": "van rynostraat",
+        "street": "van ruysbroekstraat",
         "postalcode": "2531TJ",
         "city": "Den haag",
         "province": "zuid holland",
