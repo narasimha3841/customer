@@ -26,7 +26,6 @@ import com.narasimha.customerservice.dto.CustomerDTO;
 import com.narasimha.customerservice.model.response.Address;
 import com.narasimha.customerservice.model.response.CustomerResponse;
 import com.narasimha.customerservice.model.response.JSONResponse;
-import com.narasimha.customerservice.model.response.ServiceResponse;
 import com.narasimha.customerservice.rest.route.CustomerController;
 import com.narasimha.customerservice.service.CustomerService;
 
@@ -50,35 +49,32 @@ public class CustomerControllerTest {
 		AddressDTO address1 = new AddressDTO("Van ruysbroekstraat", "2531TJ", "Den Haage", "Zuid-Holland", "Netherlands");
 		CustomerDTO customerDTO = new CustomerDTO("Edwin", "Kuiper", 38, address1);
 
-		ServiceResponse<CustomerResponse> respone = new ServiceResponse<>();
+		
 		Address address = new Address(1, "Van rynostraat", "2531TJ", "Den Haage", "Zuid-Holland", "Netherlands");
 		CustomerResponse customer = new CustomerResponse(1, "Edwin", "Kuiper", 38, address);
-		respone.setPayload(customer);
 
-		when(customerService.createCustomer(any(CustomerDTO.class))).thenReturn(respone);
+		when(customerService.createCustomer(any(CustomerDTO.class))).thenReturn(customer);
 
-		ResponseEntity<ServiceResponse<CustomerResponse>> responseEntity = customerController.createCustomer(customerDTO);
+		ResponseEntity<CustomerResponse> responseEntity = customerController.createCustomer(customerDTO);
 
 		assertEquals(responseEntity.getStatusCodeValue(), HttpStatus.CREATED.value());
-		assertNotNull(responseEntity.getBody().getPayload().getCustomerId());
-		assertEquals(customerDTO.getFirstName(), responseEntity.getBody().getPayload().getFirstName());
-		assertEquals(customerDTO.getLastName(), responseEntity.getBody().getPayload().getLastName());
+		assertNotNull(responseEntity.getBody().getCustomerId());
+		assertEquals(customerDTO.getFirstName(), responseEntity.getBody().getFirstName());
+		assertEquals(customerDTO.getLastName(), responseEntity.getBody().getLastName());
 
 	}
 
 	@Test
 	public void testCreateCustomer_badRequest() {
-		ResponseEntity<ServiceResponse<CustomerResponse>> responseEntity = null;
+		ResponseEntity<CustomerResponse> responseEntity = null;
 		try {
 			AddressDTO addressDTO = new AddressDTO("Van ruysbroekstraat", "2531TJ", "Den Haage", "Zuid-Holland","Netherlands");
 			CustomerDTO customerDTO = new CustomerDTO("", "Kuiper", 38, addressDTO);
 
-			ServiceResponse<CustomerResponse> respone = new ServiceResponse<>();
 			Address address = new Address(1, "Van rynostraat", "2531TJ", "Den Haage", "Zuid-Holland", "Netherlands");
 			CustomerResponse customer = new CustomerResponse(1, "Edwin", "Kuiper", 38, address);
-			respone.setPayload(customer);
 
-			when(customerService.createCustomer(any(CustomerDTO.class))).thenReturn(respone);
+			when(customerService.createCustomer(any(CustomerDTO.class))).thenReturn(customer);
 
 			responseEntity = customerController.createCustomer(customerDTO);
 
@@ -90,7 +86,6 @@ public class CustomerControllerTest {
 	
 	@Test
 	public void testRetrieveAllCustomers() {
-		ServiceResponse<List<CustomerResponse>> response = new ServiceResponse<>();
 		
 		List<CustomerResponse> list = new ArrayList<>();
 		Address address1 = new Address(1, "Van ruysbroekstraat", "2531TJ", "Den Haage", "Zuid-Holland", "Netherlands");
@@ -102,70 +97,59 @@ public class CustomerControllerTest {
 		list.add(customer1);
 		list.add(customer2);
 		
-		response.setPayload(list);
+		when(customerService.retrieveAllCustomers()).thenReturn(list);
 
-		when(customerService.retrieveAllCustomers()).thenReturn(response);
-
-		ResponseEntity<ServiceResponse<List<CustomerResponse>>> responseEntity = customerController.retrieveAllCustomers();
+		ResponseEntity<List<CustomerResponse>> responseEntity = customerController.retrieveAllCustomers();
 
 		assertEquals(responseEntity.getStatusCodeValue(), HttpStatus.OK.value());
-		assertFalse(responseEntity.getBody().getPayload().isEmpty());
+		assertFalse(responseEntity.getBody().isEmpty());
 
 	}
 	
 	
 	@Test
 	public void testRetrieveCustomerById() {
-		ServiceResponse<CustomerResponse> response = new ServiceResponse<>();
 		
 		Address address1 = new Address(1, "Van ruysbroekstraat", "2531TJ", "Den Haage", "Zuid-Holland", "Netherlands");
 		CustomerResponse customer1 = new CustomerResponse(1, "Edwin", "Kuiper", 38, address1);
-		response.setPayload(customer1);
-		
 
-		when(customerService.retrieveCustomerById(any(Integer.class))).thenReturn(response);
+		when(customerService.retrieveCustomerById(any(Integer.class))).thenReturn(customer1);
 		Integer customerId = 1;
 
-		ResponseEntity<ServiceResponse<CustomerResponse>> responseEntity = customerController.retrieveCustomerById(customerId);
+		ResponseEntity<CustomerResponse> responseEntity = customerController.retrieveCustomerById(customerId);
 
 		assertEquals(responseEntity.getStatusCodeValue(), HttpStatus.OK.value());
-		assertNotNull(responseEntity.getBody().getPayload().getCustomerId());
-		assertNotNull(responseEntity.getBody().getPayload().getFirstName());
+		assertNotNull(responseEntity.getBody().getCustomerId());
+		assertNotNull(responseEntity.getBody().getFirstName());
 
 	}
 	
 	@Test
 	public void testSearchCustomersByFirstNameOrLastName() {
-		ServiceResponse<List<CustomerResponse>> response = new ServiceResponse<>();
-		
 		List<CustomerResponse> list = new ArrayList<>();
 		Address address1 = new Address(1, "Van ruysbroekstraat", "2531TJ", "Den Haage", "Zuid-Holland", "Netherlands");
 		CustomerResponse customer1 = new CustomerResponse(1, "Edwin", "Kuiper", 38, address1);
 
 		list.add(customer1);
-		response.setPayload(list);
 		
 
-		when(customerService.searchCustomersByFirstNameOrLastName(any(String.class))).thenReturn(response);
+		when(customerService.searchCustomersByFirstNameOrLastName(any(String.class))).thenReturn(list);
 		String keyword = "Edwin";
 
-		ResponseEntity<ServiceResponse<List<CustomerResponse>>> responseEntity = customerController.searchCustomersByFirstNameOrLastName(keyword);
+		ResponseEntity<List<CustomerResponse>> responseEntity = customerController.searchCustomersByFirstNameOrLastName(keyword);
 
 		assertEquals(responseEntity.getStatusCodeValue(), HttpStatus.OK.value());
-		assertFalse(responseEntity.getBody().getPayload().isEmpty());
+		assertFalse(responseEntity.getBody().isEmpty());
 
 	}
 	
 	@Test
 	public void testUpdateAddress() {
-		ServiceResponse<JSONResponse>  response = new ServiceResponse<>();
-		response.setPayload(new JSONResponse("Address has been updated"));
-
-		when(customerService.updateCustomerAddress(any(Integer.class), any(AddressDTO.class))).thenReturn(response);
+		when(customerService.updateCustomerAddress(any(Integer.class), any(AddressDTO.class))).thenReturn(new JSONResponse("Address has been updated"));
 		Integer customerId = 1;
 
 		AddressDTO addressDTO = new AddressDTO("Van ruysbroekstraat", "2531TJ", "Den Haage", "Zuid-Holland", "Netherlands");
-		ResponseEntity<ServiceResponse<JSONResponse>> responseEntity = customerController.updateAddress(customerId, addressDTO);
+		ResponseEntity<JSONResponse> responseEntity = customerController.updateAddress(customerId, addressDTO);
 
 		assertEquals(responseEntity.getStatusCodeValue(), HttpStatus.OK.value());
 

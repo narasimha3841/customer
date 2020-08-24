@@ -15,7 +15,6 @@ import com.narasimha.customerservice.entity.AddressEntity;
 import com.narasimha.customerservice.entity.CustomerEntity;
 import com.narasimha.customerservice.model.response.CustomerResponse;
 import com.narasimha.customerservice.model.response.JSONResponse;
-import com.narasimha.customerservice.model.response.ServiceResponse;
 import com.narasimha.customerservice.persistence.dao.AddressDao;
 import com.narasimha.customerservice.persistence.dao.CustomerDao;
 
@@ -23,13 +22,23 @@ import com.narasimha.customerservice.persistence.dao.CustomerDao;
 public class CustomerServiceImpl implements CustomerService{
 	
 	/** variable to hold CustomerDao object */
-	@Autowired
 	private CustomerDao customerDao;
 	
 	/** variable to hold AddressDao object */
-	@Autowired
 	private AddressDao addressDao;
 	
+	
+	@Autowired
+	public CustomerServiceImpl(CustomerDao customerDao, AddressDao addressDao) {
+		super();
+		this.customerDao = customerDao;
+		this.addressDao = addressDao;
+	}
+
+	public CustomerServiceImpl() {
+
+	}
+
 	/** variable to hold ModelMapper object */
 	@Autowired
 	private ModelMapper modelMapper;
@@ -44,8 +53,7 @@ public class CustomerServiceImpl implements CustomerService{
 	 * @return  ServiceResponse
 	 */
 	@Override
-	public ServiceResponse<CustomerResponse> createCustomer(CustomerDTO customerDTO) {
-		ServiceResponse<CustomerResponse> response = new ServiceResponse<>();
+	public CustomerResponse createCustomer(CustomerDTO customerDTO) {
 		
 		CustomerEntity customerEntity = new CustomerEntity();
 		customerEntity.setFirstName(customerDTO.getFirstName());
@@ -63,9 +71,8 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		
 		CustomerEntity entity = customerDao.createCustomer(customerEntity);
-		response.setPayload(modelMapper.map(entity, CustomerResponse.class));
 		
-		return response;
+		return modelMapper.map(entity, CustomerResponse.class);
 	}
 
 	/**
@@ -74,15 +81,13 @@ public class CustomerServiceImpl implements CustomerService{
 	 * @return  ServiceResponse the list of customers
 	 */
 	@Override
-	public ServiceResponse<List<CustomerResponse>> retrieveAllCustomers() {
-		ServiceResponse<List<CustomerResponse>> response = new ServiceResponse<>();
+	public List<CustomerResponse> retrieveAllCustomers() {
 		
 		List<CustomerResponse> list = new ArrayList<>();
 		List<CustomerEntity> customerEntityList = customerDao.getAllCustomers();
 		customerEntityList.forEach( e -> list.add(modelMapper.map(e, CustomerResponse.class)));
 		
-		response.setPayload(list);
-		return  response;
+		return  list;
 	}
 
 	
@@ -92,16 +97,13 @@ public class CustomerServiceImpl implements CustomerService{
 	 * @return  ServiceResponse
 	 */
 	@Override
-	public ServiceResponse<CustomerResponse> retrieveCustomerById(Integer customerId) {
-		ServiceResponse<CustomerResponse> response = new ServiceResponse<>();
+	public CustomerResponse retrieveCustomerById(Integer customerId) {
 		
 		if(! customerDao.isExistsCustomerId(customerId)) {
 			throw new IllegalArgumentException("Customer Id: "+ customerId +" doesn't exists");
 		}
 		
-		CustomerResponse customerResponse = modelMapper.map(customerDao.retrieveCustomerById(customerId), CustomerResponse.class);
-		response.setPayload(customerResponse); 
-		return response;
+		return modelMapper.map(customerDao.retrieveCustomerById(customerId), CustomerResponse.class);
 	}
 
 	/**
@@ -111,8 +113,7 @@ public class CustomerServiceImpl implements CustomerService{
 	 * @return  ServiceResponse
 	 */
 	@Override
-	public ServiceResponse<JSONResponse> updateCustomerAddress(Integer customerId, AddressDTO addressDTO) {
-		ServiceResponse<JSONResponse> response = new ServiceResponse<>();
+	public JSONResponse updateCustomerAddress(Integer customerId, AddressDTO addressDTO) {
 		try {
 		if(! customerDao.isExistsCustomerId(customerId)) {
 			throw new IllegalArgumentException("Customer Id: "+ customerId +" doesn't exists");
@@ -131,16 +132,13 @@ public class CustomerServiceImpl implements CustomerService{
 		AddressEntity entity = addressDao.updateAddress(addressEntity);
 		
 		if(entity.getAddressId() != null) {
-			response.setPayload(new JSONResponse("Address has been updated successfully"));
-			return response;
+			return new JSONResponse("Address has been updated successfully");
 		}
 		}catch(IllegalArgumentException e) {
 			throw new IllegalArgumentException(e.getMessage());
 		}
 		catch(Exception e) {
-			LOGGER.error("CustomerServiceImpl.updateCustomerAddress() :: Exception occured while updating customer Address", e);
-			response.setPayload(new JSONResponse("Address has not updated due to system issue, Please try again later..")) ;
-			return response;
+			return new JSONResponse("Address has not updated due to system issue, Please try again later..");
 		}
 		
 		return null;
@@ -152,9 +150,7 @@ public class CustomerServiceImpl implements CustomerService{
 	 * @return  ServiceResponse the list of customers
 	 */
 	@Override
-	public ServiceResponse<List<CustomerResponse>>  searchCustomersByFirstNameOrLastName(String searchKeyword) {
-		ServiceResponse<List<CustomerResponse>> response = new ServiceResponse<>();
-		
+	public List<CustomerResponse>  searchCustomersByFirstNameOrLastName(String searchKeyword) {
 		List<CustomerResponse> list = new ArrayList<>();
 		List<CustomerEntity> customerEntityList = customerDao.searchCustomersByFirstNameOrLastName(searchKeyword);
 		
@@ -164,8 +160,7 @@ public class CustomerServiceImpl implements CustomerService{
 
 		customerEntityList.forEach( e -> list.add(modelMapper.map(e, CustomerResponse.class)));
 		
-		response.setPayload(list);
-		return  response;
+		return  list;
 	}
 
 }

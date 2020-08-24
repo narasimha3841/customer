@@ -12,8 +12,13 @@ import com.narasimha.customerservice.persistence.repository.CustomerRepository;
 public class CustomerDaoImpl implements CustomerDao{
 	
 	/** variable to hold CustomerRepository object */
-	@Autowired
 	private CustomerRepository customerRepository;
+	
+	
+	@Autowired
+	public CustomerDaoImpl(CustomerRepository customerRepository) {
+		this.customerRepository = customerRepository;
+	}
 
 	@Override
 	public CustomerEntity createCustomer(CustomerEntity customerEntity) {

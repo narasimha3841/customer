@@ -8,9 +8,14 @@ import com.narasimha.customerservice.persistence.repository.AddressRepository;
 
 @Repository
 public class AddressDaoImpl implements AddressDao{
+
+	/** variable to hold AddressRepository object */
+	private AddressRepository addressRepository;
 	
 	@Autowired
-	private AddressRepository addressRepository;
+	public AddressDaoImpl(AddressRepository addressRepository) {
+		this.addressRepository = addressRepository;
+	}
 
 	@Override
 	public AddressEntity updateAddress(AddressEntity addressEntity) {

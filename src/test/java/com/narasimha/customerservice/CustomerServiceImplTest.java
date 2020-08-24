@@ -66,11 +66,11 @@ public class CustomerServiceImplTest {
 		CustomerResponse customerResponse = new CustomerResponse(1, "Edwin", "Kuiper", 38, address);
 		when(modelMapper.map(any(), any())).thenReturn(customerResponse);
 		
-		ServiceResponse<CustomerResponse> response = customerService.createCustomer(customerDTO);
+		CustomerResponse response = customerService.createCustomer(customerDTO);
 		
-		assertNotNull(response.getPayload().getCustomerId());
-		assertEquals(customerDTO.getFirstName(), response.getPayload().getFirstName());
-		assertEquals(customerDTO.getLastName(), response.getPayload().getLastName());
+		assertNotNull(response.getCustomerId());
+		assertEquals(customerDTO.getFirstName(), response.getFirstName());
+		assertEquals(customerDTO.getLastName(), response.getLastName());
 		
 	}
 	
@@ -92,9 +92,9 @@ public class CustomerServiceImplTest {
 		CustomerResponse customerResponse = new CustomerResponse(1, "Edwin", "Kuiper", 38, address);
 		when(modelMapper.map(any(), any())).thenReturn(customerResponse);
 		
-		ServiceResponse<List<CustomerResponse>> resp = customerService.retrieveAllCustomers();
+		List<CustomerResponse> resp = customerService.retrieveAllCustomers();
 		
-		assertFalse(resp.getPayload().isEmpty());
+		assertFalse(resp.isEmpty());
 	}
 	
 	@Test
@@ -111,10 +111,10 @@ public class CustomerServiceImplTest {
 		when(modelMapper.map(any(), any())).thenReturn(customerResponse);
 		
 		Integer customerId = 1;
-		ServiceResponse<CustomerResponse> response = customerService.retrieveCustomerById(customerId);
+		CustomerResponse response = customerService.retrieveCustomerById(customerId);
 		
-		assertNotNull(response.getPayload().getCustomerId());
-		assertNotNull(response.getPayload().getFirstName());
+		assertNotNull(response.getCustomerId());
+		assertNotNull(response.getFirstName());
 		
 	}
 	
@@ -143,9 +143,9 @@ public class CustomerServiceImplTest {
 		
 		Integer customerId = 1;
 		AddressDTO addressDTO = new AddressDTO("Van ruysbroekstraat", "2531TJ", "Den Haage", "Zuid-Holland", "Netherlands");
-		ServiceResponse<JSONResponse> response = customerService.updateCustomerAddress(customerId, addressDTO);
+		JSONResponse response = customerService.updateCustomerAddress(customerId, addressDTO);
 		
-		assertNotNull(response.getPayload().getMessage());
+		assertNotNull(response.getMessage());
 	}
 	
 	@Test
@@ -168,9 +168,9 @@ public class CustomerServiceImplTest {
 		when(modelMapper.map(any(), any())).thenReturn(customerResponse);
 		
 		String searchKeyword = "Edwin";
-		ServiceResponse<List<CustomerResponse>> resp = customerService.searchCustomersByFirstNameOrLastName(searchKeyword);
+		List<CustomerResponse> resp = customerService.searchCustomersByFirstNameOrLastName(searchKeyword);
 		
-		assertFalse(resp.getPayload().isEmpty());
+		assertFalse(resp.isEmpty());
 		
 		
 	}
@@ -183,9 +183,9 @@ public class CustomerServiceImplTest {
 		when(customerDao.searchCustomersByFirstNameOrLastName(any(String.class))).thenReturn(list);
 		
 		String searchKeyword = "Edwin";
-		ServiceResponse<List<CustomerResponse>> resp = customerService.searchCustomersByFirstNameOrLastName(searchKeyword);
+		List<CustomerResponse> resp = customerService.searchCustomersByFirstNameOrLastName(searchKeyword);
 		
-		assertTrue(resp.getPayload().isEmpty());
+		assertTrue(resp.isEmpty());
 		});
 		
 	}

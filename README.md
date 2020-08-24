@@ -186,9 +186,9 @@ Body:
 
 ### Request
 Method: GET
-URL: http://localhost:7070/cusomters/search/{searchKeyword}
+URL: http://localhost:7070/cusomters/id?name={serachstring}
 
-Example:  http://localhost:7070/cusomters/search/Edwin
+Example:  http://localhost:7070/cusomters/id?name=Edwin
 
 Response:
 

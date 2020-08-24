@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.narasimha.customerservice.dto.AddressDTO;
 import com.narasimha.customerservice.dto.CustomerDTO;
 import com.narasimha.customerservice.model.response.CustomerResponse;
 import com.narasimha.customerservice.model.response.JSONResponse;
-import com.narasimha.customerservice.model.response.ServiceResponse;
 import com.narasimha.customerservice.service.CustomerService;
 
 /**
@@ -34,9 +34,14 @@ import com.narasimha.customerservice.service.CustomerService;
 public class CustomerController {
 	
 	/** variable to hold customer service obj */
-	@Autowired
 	private CustomerService customerService;
 	
+	
+	@Autowired
+	public CustomerController(CustomerService customerService) {
+		this.customerService = customerService;
+	}
+
 	/** variable to hold logger object */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
 	
@@ -48,7 +53,7 @@ public class CustomerController {
 	 * @return  ResponseEntity
 	 */
 	@PostMapping("/cusomters")
-	public ResponseEntity<ServiceResponse<CustomerResponse>> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
+	public ResponseEntity<CustomerResponse> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.createCustomer(customerDTO),  HttpStatus.CREATED);
 	}
 	
@@ -59,7 +64,7 @@ public class CustomerController {
 	 * @return  ResponseEntity
 	 */
 	@GetMapping("/cusomters")
-	public ResponseEntity<ServiceResponse<List<CustomerResponse>>>  retrieveAllCustomers() {
+	public ResponseEntity<List<CustomerResponse>>  retrieveAllCustomers() {
         return new ResponseEntity<>(customerService.retrieveAllCustomers(),  HttpStatus.OK);
 	}
 	
@@ -70,7 +75,7 @@ public class CustomerController {
 	 * @return  ResponseEntity
 	 */
 	@GetMapping("/cusomters/{customerId}")
-	public ResponseEntity<ServiceResponse<CustomerResponse>>  retrieveCustomerById(@PathVariable(value="customerId") Integer customerId) {
+	public ResponseEntity<CustomerResponse>  retrieveCustomerById(@PathVariable(value="customerId") Integer customerId) {
         return new ResponseEntity<>(customerService.retrieveCustomerById(customerId),  HttpStatus.OK);
 	} 
 	
@@ -80,9 +85,9 @@ public class CustomerController {
 	 * @param CustomerDTO customerDTO
 	 * @return  ResponseEntity
 	 */
-	@GetMapping("/cusomters/search/{searchKeyword}")
-	public ResponseEntity<ServiceResponse<List<CustomerResponse>>>  searchCustomersByFirstNameOrLastName(@PathVariable(value="searchKeyword") String searchKeyword) {
-        return new ResponseEntity<>(customerService.searchCustomersByFirstNameOrLastName(searchKeyword),  HttpStatus.OK);
+	@GetMapping("/cusomters/id")
+	public ResponseEntity<List<CustomerResponse>>  searchCustomersByFirstNameOrLastName(@RequestParam(value="name") String name) {
+        return new ResponseEntity<>(customerService.searchCustomersByFirstNameOrLastName(name),  HttpStatus.OK);
 	}
 	
 	/**
@@ -92,7 +97,7 @@ public class CustomerController {
 	 * @return  ResponseEntity
 	 */
 	@PutMapping("/cusomters/{customerId}/address")
-	public ResponseEntity<ServiceResponse<JSONResponse>> updateAddress(@PathVariable("customerId") Integer customerId, @Valid @RequestBody AddressDTO addressDTO) {
+	public ResponseEntity<JSONResponse> updateAddress(@PathVariable("customerId") Integer customerId, @Valid @RequestBody AddressDTO addressDTO) {
         return new ResponseEntity<>(customerService.updateCustomerAddress(customerId, addressDTO),  HttpStatus.OK);
 	}
 
