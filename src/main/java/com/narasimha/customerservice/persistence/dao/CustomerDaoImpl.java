@@ -2,6 +2,8 @@ package com.narasimha.customerservice.persistence.dao;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +16,8 @@ public class CustomerDaoImpl implements CustomerDao{
 	/** variable to hold CustomerRepository object */
 	private CustomerRepository customerRepository;
 	
+	/** variable to hold logger object */
+	private static final Logger LOGGER = LoggerFactory.getLogger(CustomerDaoImpl.class);
 	
 	@Autowired
 	public CustomerDaoImpl(CustomerRepository customerRepository) {
@@ -42,8 +46,8 @@ public class CustomerDaoImpl implements CustomerDao{
 	}
 
 	@Override
-	public List<CustomerEntity> searchCustomersByFirstNameOrLastName(String searchKeyword) {
-		return customerRepository.searchCustomersByFirstNameOrLastName(searchKeyword);
+	public List<CustomerEntity> searchCustomersByFirstNameOrLastName(String fname , String lname) {
+		return customerRepository.searchCustomersByFirstNameOrLastName(fname , lname);
 	}
 
 }

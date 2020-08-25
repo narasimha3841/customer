@@ -1,11 +1,7 @@
 package com.narasimha.customerservice.exception;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
 
 import org.slf4j.Logger;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,69 +14,48 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
-import com.narasimha.customerservice.model.response.ServiceResponse;
+import com.narasimha.customerservice.model.response.ErrorResponse;
 
 
 @ControllerAdvice(basePackages = "com.narasimha.customerservice")
 public class ControllerExceptionHandler {
 	Logger logger;
 	
-	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(NullPointerException.class)
-	public ResponseEntity<ServiceResponse> handleNullRequest(NullPointerException e){
-		ServiceResponse error = new ServiceResponse();
-		error.setTimestamp(new Date());
-		error.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
-		error.setStatusMsg(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<ErrorResponse> handleNullRequest(NullPointerException e){
+		ErrorResponse error = new ErrorResponse();
 		error.setErrorMsg(e.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<ServiceResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException e){
-		ServiceResponse error = new ServiceResponse();
-		error.setTimestamp(new Date());
-		error.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
-		error.setStatusMsg(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException e){
+		ErrorResponse error = new ErrorResponse();
 		error.setErrorMsg(e.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 	
 
-	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<ServiceResponse> handleBadRequest(IllegalArgumentException e){
-		ServiceResponse error = new ServiceResponse();
-		error.setTimestamp(new Date());
-		error.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
-		error.setStatusMsg(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<ErrorResponse> handleBadRequest(IllegalArgumentException e){
+		ErrorResponse error = new ErrorResponse();
 		error.setErrorMsg(e.getMessage());
-		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<ServiceResponse> handleConstraintViolation(Exception ex, WebRequest request) {
-		ServiceResponse error = new ServiceResponse();
-	   
-	    	error.setTimestamp(new Date());
-			error.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
-			error.setStatusMsg(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<ErrorResponse> handleConstraintViolation(Exception ex, WebRequest request) {
+		ErrorResponse error = new ErrorResponse();
 			error.setErrorMsg(ex.getMessage());
-			return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	
 	}
 
-	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(ServiceDataNotFoundException.class)
-	public ResponseEntity<ServiceResponse> handleDataNotFound(ServiceDataNotFoundException e) {
+	public ResponseEntity<ErrorResponse> handleDataNotFound(ServiceDataNotFoundException e) {
 		
-		ServiceResponse error = new ServiceResponse();
-		error.setTimestamp(new Date());
-		error.setStatusCode(HttpServletResponse.SC_NOT_FOUND);
-		error.setStatusMsg(HttpStatus.NOT_FOUND);
+		ErrorResponse error = new ErrorResponse();
 		error.setErrorMsg(e.getMessage());
 		
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
@@ -88,27 +63,19 @@ public class ControllerExceptionHandler {
 	
 	
 	
-	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(ServiceFailureException.class)
-	public ResponseEntity<ServiceResponse> handleServicefailure(ServiceFailureException e) {
+	public ResponseEntity<ErrorResponse> handleServicefailure(ServiceFailureException e) {
 		
-		ServiceResponse error = new ServiceResponse();
-		error.setTimestamp(new Date());
-		error.setStatusCode(HttpServletResponse.SC_BAD_GATEWAY);
-		error.setStatusMsg(HttpStatus.INTERNAL_SERVER_ERROR);
+		ErrorResponse error = new ErrorResponse();
 		error.setErrorMsg(e.getMessage());
 		
 		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@SuppressWarnings("rawtypes")
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ServiceResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-		ServiceResponse error = new ServiceResponse();
-		error.setTimestamp(new Date());
-		error.setStatusCode(HttpServletResponse.SC_BAD_REQUEST);
-		error.setStatusMsg(HttpStatus.BAD_REQUEST);
+	public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+		ErrorResponse error = new ErrorResponse();
 		
 		List<String> errMsgList = new ArrayList<>();
 	    ex.getBindingResult().getAllErrors().forEach(errorObj -> {
@@ -121,14 +88,10 @@ public class ControllerExceptionHandler {
 	
 
 	
-	@SuppressWarnings("rawtypes")
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ServiceResponse> handleExceptionError(Exception e){
+	public ResponseEntity<ErrorResponse> handleExceptionError(Exception e){
 		logger.error("ControllerExceptionHandler.handleExceptionError(): Exception occured {}",e);
-		ServiceResponse error = new ServiceResponse();
-		error.setTimestamp(new Date());
-		error.setStatusCode(HttpServletResponse.SC_BAD_GATEWAY);
-		error.setStatusMsg(HttpStatus.INTERNAL_SERVER_ERROR);
+		ErrorResponse error = new ErrorResponse();
 		error.setErrorMsg(e.getMessage());
 		return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
 	}

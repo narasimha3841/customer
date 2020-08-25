@@ -14,6 +14,6 @@ public interface CustomerDao {
 
 	boolean isExistsCustomerId(Integer customerId);
 
-	List<CustomerEntity> searchCustomersByFirstNameOrLastName(String searchKeyword);
+	List<CustomerEntity> searchCustomersByFirstNameOrLastName(String fname , String lname);
 
 }

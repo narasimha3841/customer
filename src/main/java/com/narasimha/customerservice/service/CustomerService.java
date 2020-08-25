@@ -17,6 +17,6 @@ public interface CustomerService {
 
 	JSONResponse updateCustomerAddress(Integer customerId, AddressDTO addressDTO);
 
-	List<CustomerResponse> searchCustomersByFirstNameOrLastName(String searchKeyword);
+	List<CustomerResponse> searchCustomersByFirstNameOrLastName(String fname , String lname);
 
 }

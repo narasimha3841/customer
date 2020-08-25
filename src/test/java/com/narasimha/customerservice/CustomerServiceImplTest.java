@@ -25,7 +25,7 @@ import com.narasimha.customerservice.entity.CustomerEntity;
 import com.narasimha.customerservice.model.response.Address;
 import com.narasimha.customerservice.model.response.CustomerResponse;
 import com.narasimha.customerservice.model.response.JSONResponse;
-import com.narasimha.customerservice.model.response.ServiceResponse;
+import com.narasimha.customerservice.model.response.ErrorResponse;
 import com.narasimha.customerservice.persistence.dao.AddressDao;
 import com.narasimha.customerservice.persistence.dao.CustomerDao;
 import com.narasimha.customerservice.service.CustomerService;
@@ -161,14 +161,13 @@ public class CustomerServiceImplTest {
 		list.add(customerEntity1);
 		list.add(customerEntity2);
 		
-		when(customerDao.searchCustomersByFirstNameOrLastName(any(String.class))).thenReturn(list);
+		when(customerDao.searchCustomersByFirstNameOrLastName(any(String.class), any(String.class))).thenReturn(list);
 		
 		Address address = new Address(1, "Volmerlaan", "2288 GC", "Rijswijk", "Zuid-Holland", "Netherlands");
 		CustomerResponse customerResponse = new CustomerResponse(1, "Edwin", "Kuiper", 38, address);
 		when(modelMapper.map(any(), any())).thenReturn(customerResponse);
-		
-		String searchKeyword = "Edwin";
-		List<CustomerResponse> resp = customerService.searchCustomersByFirstNameOrLastName(searchKeyword);
+
+		List<CustomerResponse> resp = customerService.searchCustomersByFirstNameOrLastName("Erik", "Van");
 		
 		assertFalse(resp.isEmpty());
 		
@@ -180,10 +179,10 @@ public class CustomerServiceImplTest {
 		assertThrows(IllegalArgumentException.class, () -> {
 		List<CustomerEntity> list = new ArrayList<>();
 		
-		when(customerDao.searchCustomersByFirstNameOrLastName(any(String.class))).thenReturn(list);
+		when(customerDao.searchCustomersByFirstNameOrLastName(any(String.class), any(String.class))).thenReturn(list);
 		
 		String searchKeyword = "Edwin";
-		List<CustomerResponse> resp = customerService.searchCustomersByFirstNameOrLastName(searchKeyword);
+		List<CustomerResponse> resp = customerService.searchCustomersByFirstNameOrLastName("Erik", "Van");
 		
 		assertTrue(resp.isEmpty());
 		});

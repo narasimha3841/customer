@@ -52,7 +52,7 @@ public class CustomerController {
 	 * @param CustomerDTO customerDTO
 	 * @return  ResponseEntity
 	 */
-	@PostMapping("/cusomters")
+	@PostMapping("/customers")
 	public ResponseEntity<CustomerResponse> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.createCustomer(customerDTO),  HttpStatus.CREATED);
 	}
@@ -63,7 +63,7 @@ public class CustomerController {
 	 * @param CustomerDTO customerDTO
 	 * @return  ResponseEntity
 	 */
-	@GetMapping("/cusomters")
+	@GetMapping("/customers")
 	public ResponseEntity<List<CustomerResponse>>  retrieveAllCustomers() {
         return new ResponseEntity<>(customerService.retrieveAllCustomers(),  HttpStatus.OK);
 	}
@@ -74,7 +74,7 @@ public class CustomerController {
 	 * @param CustomerDTO customerDTO
 	 * @return  ResponseEntity
 	 */
-	@GetMapping("/cusomters/{customerId}")
+	@GetMapping("/customers/{customerId}")
 	public ResponseEntity<CustomerResponse>  retrieveCustomerById(@PathVariable(value="customerId") Integer customerId) {
         return new ResponseEntity<>(customerService.retrieveCustomerById(customerId),  HttpStatus.OK);
 	} 
@@ -85,9 +85,9 @@ public class CustomerController {
 	 * @param CustomerDTO customerDTO
 	 * @return  ResponseEntity
 	 */
-	@GetMapping("/cusomters/id")
-	public ResponseEntity<List<CustomerResponse>>  searchCustomersByFirstNameOrLastName(@RequestParam(value="name") String name) {
-        return new ResponseEntity<>(customerService.searchCustomersByFirstNameOrLastName(name),  HttpStatus.OK);
+	@GetMapping("/customers/search")
+	public ResponseEntity<List<CustomerResponse>>  searchCustomersByFirstNameOrLastName(@RequestParam(value="fname") String fname, @RequestParam(value="lname") String lname) {
+        return new ResponseEntity<>(customerService.searchCustomersByFirstNameOrLastName(fname , lname),  HttpStatus.OK);
 	}
 	
 	/**
@@ -96,7 +96,7 @@ public class CustomerController {
 	 * @param CustomerDTO customerDTO
 	 * @return  ResponseEntity
 	 */
-	@PutMapping("/cusomters/{customerId}/address")
+	@PutMapping("/customers/{customerId}/address")
 	public ResponseEntity<JSONResponse> updateAddress(@PathVariable("customerId") Integer customerId, @Valid @RequestBody AddressDTO addressDTO) {
         return new ResponseEntity<>(customerService.updateCustomerAddress(customerId, addressDTO),  HttpStatus.OK);
 	}

@@ -133,10 +133,10 @@ public class CustomerControllerTest {
 		list.add(customer1);
 		
 
-		when(customerService.searchCustomersByFirstNameOrLastName(any(String.class))).thenReturn(list);
+		when(customerService.searchCustomersByFirstNameOrLastName(any(String.class),any(String.class))).thenReturn(list);
 		String keyword = "Edwin";
 
-		ResponseEntity<List<CustomerResponse>> responseEntity = customerController.searchCustomersByFirstNameOrLastName(keyword);
+		ResponseEntity<List<CustomerResponse>> responseEntity = customerController.searchCustomersByFirstNameOrLastName("Erik", "Van");
 
 		assertEquals(responseEntity.getStatusCodeValue(), HttpStatus.OK.value());
 		assertFalse(responseEntity.getBody().isEmpty());

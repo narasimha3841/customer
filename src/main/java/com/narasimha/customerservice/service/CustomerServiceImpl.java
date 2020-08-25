@@ -54,6 +54,7 @@ public class CustomerServiceImpl implements CustomerService{
 	 */
 	@Override
 	public CustomerResponse createCustomer(CustomerDTO customerDTO) {
+		LOGGER.info("CustomerServiceImpl.createCustomer() ::: Enters");
 		
 		CustomerEntity customerEntity = new CustomerEntity();
 		customerEntity.setFirstName(customerDTO.getFirstName());
@@ -72,6 +73,7 @@ public class CustomerServiceImpl implements CustomerService{
 		
 		CustomerEntity entity = customerDao.createCustomer(customerEntity);
 		
+		LOGGER.info("CustomerServiceImpl.createCustomer() ::: Exits");
 		return modelMapper.map(entity, CustomerResponse.class);
 	}
 
@@ -82,11 +84,13 @@ public class CustomerServiceImpl implements CustomerService{
 	 */
 	@Override
 	public List<CustomerResponse> retrieveAllCustomers() {
+		LOGGER.info("CustomerServiceImpl.retrieveAllCustomers() ::: Enters");
 		
 		List<CustomerResponse> list = new ArrayList<>();
 		List<CustomerEntity> customerEntityList = customerDao.getAllCustomers();
 		customerEntityList.forEach( e -> list.add(modelMapper.map(e, CustomerResponse.class)));
 		
+		LOGGER.info("CustomerServiceImpl.retrieveAllCustomers() ::: Exits");
 		return  list;
 	}
 
@@ -98,11 +102,13 @@ public class CustomerServiceImpl implements CustomerService{
 	 */
 	@Override
 	public CustomerResponse retrieveCustomerById(Integer customerId) {
+		LOGGER.info("CustomerServiceImpl.retrieveCustomerById() ::: Enters");
 		
 		if(! customerDao.isExistsCustomerId(customerId)) {
 			throw new IllegalArgumentException("Customer Id: "+ customerId +" doesn't exists");
 		}
 		
+		LOGGER.info("CustomerServiceImpl.retrieveCustomerById() ::: Exits");
 		return modelMapper.map(customerDao.retrieveCustomerById(customerId), CustomerResponse.class);
 	}
 
@@ -114,6 +120,8 @@ public class CustomerServiceImpl implements CustomerService{
 	 */
 	@Override
 	public JSONResponse updateCustomerAddress(Integer customerId, AddressDTO addressDTO) {
+		LOGGER.info("CustomerServiceImpl.updateCustomerAddress() ::: Enters");
+		
 		try {
 		if(! customerDao.isExistsCustomerId(customerId)) {
 			throw new IllegalArgumentException("Customer Id: "+ customerId +" doesn't exists");
@@ -132,15 +140,18 @@ public class CustomerServiceImpl implements CustomerService{
 		AddressEntity entity = addressDao.updateAddress(addressEntity);
 		
 		if(entity.getAddressId() != null) {
+			LOGGER.info("CustomerServiceImpl.updateCustomerAddress() ::: Exits");
 			return new JSONResponse("Address has been updated successfully");
 		}
 		}catch(IllegalArgumentException e) {
 			throw new IllegalArgumentException(e.getMessage());
 		}
 		catch(Exception e) {
+			LOGGER.error("CustomerServiceImpl.updateCustomerAddress() ::: Exception occured while updating customer address");
 			return new JSONResponse("Address has not updated due to system issue, Please try again later..");
 		}
 		
+		LOGGER.info("CustomerServiceImpl.updateCustomerAddress() ::: Exits");
 		return null;
 	}
 	
@@ -150,16 +161,18 @@ public class CustomerServiceImpl implements CustomerService{
 	 * @return  ServiceResponse the list of customers
 	 */
 	@Override
-	public List<CustomerResponse>  searchCustomersByFirstNameOrLastName(String searchKeyword) {
+	public List<CustomerResponse>  searchCustomersByFirstNameOrLastName(String fname , String lname) {
+		LOGGER.info("CustomerServiceImpl.searchCustomersByFirstNameOrLastName() ::: Enters");
 		List<CustomerResponse> list = new ArrayList<>();
-		List<CustomerEntity> customerEntityList = customerDao.searchCustomersByFirstNameOrLastName(searchKeyword);
+		List<CustomerEntity> customerEntityList = customerDao.searchCustomersByFirstNameOrLastName(fname , lname);
 		
 		if(customerEntityList.isEmpty()) {
-			throw new IllegalArgumentException("No customers found with search keyword :"+searchKeyword);
+			throw new IllegalArgumentException("No customers found with fistname : "+fname + " and lastname : "+ lname);
 		}
 
 		customerEntityList.forEach( e -> list.add(modelMapper.map(e, CustomerResponse.class)));
 		
+		LOGGER.info("CustomerServiceImpl.searchCustomersByFirstNameOrLastName() ::: Exits");
 		return  list;
 	}
 
